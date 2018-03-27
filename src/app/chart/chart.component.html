@@ -1,0 +1,59 @@
+<div class="py-5">
+	<div class="row">
+		<div class="col-md-3">
+			<label for="currency">{{currency.label}}</label>
+			<input id="currency" [(ngModel)]="currency.value" [typeahead]="values" type="number" placeholder={{currency.placeholder}} class="form-control d-block w-100">
+		</div>
+		<div class="col-md-2">
+			<label for="base">{{base.label}}</label>
+			<input id="base" [(ngModel)]="base.value" [typeahead]="options" [typeaheadScrollable]="true" [typeaheadSingleWords]="typeaheadSingleWords" [typeaheadMinLength]="0" placeholder={{base.placeholder}} class="form-control d-block w-100" (ngModelChange)="getRates();getHistory();">
+		</div>
+		<div class="col-md-2">
+			<label for="versus">{{versus.label}}</label>
+			<input id="versus" [(ngModel)]="versus.value" [typeahead]="options" [typeaheadScrollable]="true" [typeaheadSingleWords]="typeaheadSingleWords" [typeaheadMinLength]="0" placeholder={{versus.placeholder}} class="form-control d-block w-100" (ngModelChange)="getHistory();">
+		</div>
+		<div class="col-md-3">
+			<label for="converted">{{converted.label}}</label>
+			<ngx-loading [show]="isCalculating" [config]="{ backdropBorderRadius: '1px' }"></ngx-loading>
+			<input [(ngModel)]="converted.value" [typeahead]="values" type="number" disabled="true" class="form-control d-block w-100">
+		</div>
+		<div class="col-md-2">
+			<div class="empty"></div>
+			<button id="convert-button" type="button" class="btn btn-primary btn-block" (click)="convert()" [disabled]="isCalculating">{{convertButton.label}}</button>
+		</div>
+	</div>
+</div>
+<div class="py-4">
+	<div class="row">
+		<div class="col-md-3 order-md-1 pre-scrollable">
+			<ul class="list-group mb-3">
+				<ngx-loading [show]="isLoadingRates" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+				<li *ngFor="let rate of rates" class="list-group-item d-flex justify-content-between lh-condensed">
+			        <div>
+			            <h6 class="my-0">{{rate.name}}</h6>
+			        </div>
+			        <span class="text-muted">{{rate.value}}</span>
+			    </li>
+			</ul>
+		</div>
+		<div class="col-md-3 order-md-3">
+			<form [formGroup]="form">
+				<div class="btn-group-vertical btn-block" btnRadioGroup formControlName="range">
+				  <label *ngFor="let rangeOption of rangeOptions" class="btn btn-info" btnRadio={{rangeOption.key}} (click)="setRange()" [disabled]="isLoading">{{rangeOption.name}}</label>
+				</div>
+				<div class="form-group">
+					<input
+				        class="form-control" 
+				        #drp="bsDaterangepicker"
+				        bsDaterangepicker 
+				        (ngModelChange)="getHistory()"
+				        formControlName="rangeValue">
+				</div>
+			</form>	
+		</div>	
+		<div class="col-md-6 order-md-2">
+			<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+			<canvas id="canvas">{{ chart }}</canvas>
+		</div>		
+	</div>	
+</div>
