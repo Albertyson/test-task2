@@ -1,5 +1,6 @@
 # CurrencyExchangeApp
 
-## Development server
+1. Run `npm install`
+2. Run `npm start`
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
+3. Navigate to `http://localhost:4200/`.
